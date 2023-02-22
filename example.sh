@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-who=Galaxies
+who=Universe
 echo "Hello $who!"
