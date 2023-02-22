@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-echo "Hello Galaxies!"
+who=Galaxies
+echo "Hello $who!"
