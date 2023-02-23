@@ -141,7 +141,7 @@ Found 3 commits
 [3 total, 1 relevant, 0 irrelevant, 0 skipped, 2 unknown] inspecing d25f474 ...
 [3 total, 2 relevant, 1 irrelevant, 0 skipped, 0 unknown] done
 
-First commit (dcf6dae3d2f04e84a83cfdc27215147a946222e6):
+dcf6dae Initial check-in
 41
 48c68e2 Second version
 44

@@ -15,7 +15,7 @@ parser.add_option("-t", "--to", dest="to", default="HEAD",
 parser.add_option("--hide-stderr", action = "store_true", dest="hidestderr",
                   help="Hide the command stderr. Good if nosiy")
 parser.add_option("--show-output", action = "store_true", dest="show_output",
-                  help="Include the program output after each log line")
+                  help="Include the program output after each log line, and include the first commit in the log")
 parser.add_option("--log-options", action = "store", dest="log_options",
                   default="--oneline --no-decorate",
                   help="How to print the git log (default: --oneline)")
