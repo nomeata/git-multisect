@@ -16,7 +16,7 @@ Intro
 ### Very small example
 
 Consider this very small git repository, with four commits:
- * A first commit that adds the `example.sh` program,
+ * A initial commit that adds the `example.sh` program,
  * one that changes its output,
  * one that just refactors the code,
  * but does not change the output, and
