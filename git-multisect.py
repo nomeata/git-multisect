@@ -7,11 +7,11 @@ from optparse import OptionParser
 
 parser = OptionParser()
 parser.add_option("-C", "--repo", dest="repo", default=".",
-                  help="Repository (default .)", metavar="REV")
+                  help="Repository (default .)", metavar="DIR")
 parser.add_option("-f", "--from", dest="start",
                   help="First revision", metavar="REV")
 parser.add_option("-t", "--to", dest="to", default="HEAD",
-                  help="Last revision (defaults to HEAD)", metavar="REV")
+                  help="Last revision (default: HEAD)", metavar="REV")
 parser.add_option("--hide-stderr", action = "store_true", dest="hidestderr",
                   help="Hide the command stderr. Good if nosiy")
 parser.add_option("--show-output", action = "store_true", dest="show_output",
