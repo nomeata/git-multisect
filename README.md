@@ -173,10 +173,10 @@ In the following example, I want to know which changes to the nixpkgs package re
 * With `--hide-stderr` I make it hide the noise that `nix path-info` does on stderr.
 * Finally, because most nixpkgs commits are merges and their first line is rather unhelpful, I pass `--log-option=--pretty=medium` to switch to a more elaborate log format.
 
-At the time of writing, there are 39 new commits, but after inspecting 19 of
-them, it found that only seven commits are relevant to me. It does not even
+At the time of writing, there are 39 new commits, but after inspecting 10 of
+them, it found that only two commits are relevant to me. It does not even
 look at commits that are between two commits where the program produces the
-same output; in this case this saved looking at two commits.
+same output; in this case this saved looking at 29 commits.
 
 ```
 $ git-multisect.py \
@@ -188,13 +188,6 @@ $ git-multisect.py \
 	   '--no-update-lock-file '\
 	   '--override-input nixpkgs ~/"build/nixpkgs?rev=$REV"' \
 	--hide-stderr --log-option=--pretty=medium
-```
-
-<details>
-
-<summary>This produces this output</summary>
-
-```
 Found 39 commits
 [39 total, 0 relevant, 0 irrelevant, 0 skipped, 39 unknown] inspecing 2fb7d74 ...
 [39 total, 0 relevant, 0 irrelevant, 0 skipped, 39 unknown] inspecing 569163e ...
@@ -205,73 +198,16 @@ Found 39 commits
 [39 total, 0 relevant, 2 irrelevant, 9 skipped, 28 unknown] inspecing e6d5772 ...
 [39 total, 0 relevant, 3 irrelevant, 9 skipped, 27 unknown] inspecing a099526 ...
 [39 total, 1 relevant, 4 irrelevant, 9 skipped, 25 unknown] inspecing 854312a ...
-[39 total, 1 relevant, 4 irrelevant, 9 skipped, 25 unknown] inspecing f27a4e2 ...
-[39 total, 3 relevant, 4 irrelevant, 9 skipped, 23 unknown] inspecing 95043dc ...
-[39 total, 4 relevant, 4 irrelevant, 9 skipped, 22 unknown] inspecing 0cf4274 ...
-[39 total, 5 relevant, 5 irrelevant, 9 skipped, 20 unknown] inspecing 638ac67 ...
-[39 total, 5 relevant, 5 irrelevant, 9 skipped, 20 unknown] inspecing cdd5636 ...
-[39 total, 5 relevant, 6 irrelevant, 13 skipped, 15 unknown] inspecing a7af1ab ...
-[39 total, 5 relevant, 7 irrelevant, 14 skipped, 13 unknown] inspecing 263bcb3 ...
-[39 total, 6 relevant, 8 irrelevant, 15 skipped, 10 unknown] inspecing d07ee65 ...
-[39 total, 6 relevant, 9 irrelevant, 19 skipped, 5 unknown] inspecing 2dc8a48 ...
-[39 total, 6 relevant, 10 irrelevant, 20 skipped, 3 unknown] inspecing 167d66f ...
-[39 total, 6 relevant, 11 irrelevant, 20 skipped, 2 unknown] inspecing c95bf18 ...
-[39 total, 7 relevant, 12 irrelevant, 20 skipped, 0 unknown] done
+[39 total, 1 relevant, 5 irrelevant, 10 skipped, 23 unknown] inspecing 95043dc ...
+[39 total, 1 relevant, 6 irrelevant, 10 skipped, 22 unknown] inspecing 0cf4274 ...
+[39 total, 2 relevant, 8 irrelevant, 29 skipped, 0 unknown] done
 
 commit a0995268af8ba0336a81344a3bf6a50d6d6481b2
 Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
 Date:   Sat Feb 18 10:45:11 2023 -0800
 
     linux_{5_15,6_1}: revert patch to fix Equinix Metal bonded networking with `ice` driver (#216955)
-
-    Some Equinix Metal instances, such as a3.large.x86, m3.large.x86
-    (specific hardware revisions), and n3.large.x86, use the `ice` kernel
-    driver for their network cards, in conjunction with bonded devices.
-    However, this commit caused a regression where these bonded devices
-    would deadlock. This was initially reported by Jaroslav Pulchart on
-    the netdev mailing list[1], and there were follow-up patches from Dave
-    Ertman[2][3] that attempted to fix this but were not up to snuff for
-    various reasons[4].
-
-    Specifically, v2 of the patch ([3]) appears to fix the issue on some
-    devices (tested with 8086:159B network cards), while it is still broken
-    on others (such as an 8086:1593 network card).
-
-    We revert the patch exposing the issue until upstream has a working
-    solution in order to make Equinix Metal instances work reliably again.
-
-    [1]: https://lore.kernel.org/netdev/CAK8fFZ6A_Gphw_3-QMGKEFQk=sfCw1Qmq0TVZK3rtAi7vb621A@mail.gmail.com/
-    [2]: https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20230111183145.1497367-1-david.m.ertman@intel.com/
-    [3]: https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20230215191757.1826508-1-david.m.ertman@intel.com/
-    [4]: https://lore.kernel.org/netdev/cb31a911-ba80-e2dc-231f-851757cfd0b8@intel.com/T/#m6e53f8c43093693c10268140126abe99e082dc1c
-
-    (cherry picked from commit 4e2079b96d281212b695ca557755909799f163ad)
-
-    Co-authored-by: Cole Helbling <cole.helbling@determinate.systems>
-commit f27a4e2f6a3a23b843ca1c736e6043fb8b99acc1
-Merge: 89d03617610 85b77f73405
-Author: Nick Cao <nickcao@nichi.co>
-Date:   Sun Feb 19 09:48:52 2023 +0800
-
-    Merge pull request #217008 from NixOS/backport-202245-to-release-22.11
-
-    [Backport release-22.11] nixos/rpcbind: Add dependency for systemd-tmpfiles-setup
-commit 854312a89d8de4274d5bce358a7ad71f55a7d29b
-Merge: f27a4e2f6a3 ed2f5ad6f0e
-Author: Maximilian Bosch <maximilian@mbosch.me>
-Date:   Sun Feb 19 11:16:17 2023 +0100
-
-    Merge pull request #217020 from NixOS/backport-209147-to-release-22.11
-
-    [Backport release-22.11] nixos/parsedmarc: fix Grafana provisioning
-commit 95043dc713d94d913ca1087f543e185a76e46cd5
-Merge: 854312a89d8 13f402f7287
-Author: Maximilian Bosch <maximilian@mbosch.me>
-Date:   Sun Feb 19 11:23:16 2023 +0100
-
-    Merge pull request #216875 from NixOS/backport-216658-to-release-22.11
-
-    [Backport release-22.11] nixos/tests: sensible test timeouts
+…
 commit 0cf4274b5d06325bd16dbf879a30981bc283e58a
 Merge: 95043dc713d 532f3aa6052
 Author: Pierre Bourdon <delroth@gmail.com>
@@ -280,25 +216,8 @@ Date:   Sun Feb 19 23:37:48 2023 +0900
     Merge pull request #217121 from NixOS/backport-216463-to-release-22.11
 
     [Backport release-22.11] sudo: 1.9.12p2 -> 1.9.13
-commit 263bcb3b79ac2cfe7986c6933e0b684a0df05939
-Merge: a7af1abd95b 43a7503149f
-Author: Kim Lindberger <kim.lindberger@gmail.com>
-Date:   Tue Feb 21 15:56:20 2023 +0100
-
-    Merge pull request #217310 from NixOS/backport-215523-to-release-22.11
-
-    [Backport release-22.11] discourse: 2.9.0.beta14 -> 3.1.0.beta2
-commit 569163eaeef921fe1932ffcdbecdccf004ae6982 (HEAD -> release-22.11, origin/release-22.11)
-Merge: c95bf18beba 019251bbb36
-Author: Nick Cao <nickcao@nichi.co>
-Date:   Thu Feb 23 09:13:59 2023 +0800
-
-    Merge pull request #217779 from NixOS/backport-217730-to-release-22.11
-
-    [Backport release-22.11] nixos/alps: fix embarrasing typo
 ```
 
-</details>
 
 Usage
 -----
