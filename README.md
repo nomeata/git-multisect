@@ -18,7 +18,11 @@ Consider this very small git repository, with four commits:
  * one that changes its output,
  * one that just refactors the code,
  * but does not change the output, and
- * yet another changing the output:
+ * yet another changing the output
+
+<details>
+
+<summary>Look at each change…</summary>
 
 ```
 $ git log --oneline --reverse -p
@@ -91,6 +95,8 @@ index 91bee54..bd704ea 100755
 +who=Universe
  echo "Hello $who!"
 ```
+
+</details>
 
 As a user upgrading from `dcf6dae` to the latest verision, we might want to check the changelog:
 ```
