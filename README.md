@@ -10,8 +10,10 @@ project, and you are bumping the dependency version, and you want to see the cha
 done upstream that affect _your_ project. So you instruct `git multisect` to build
 it with all upstream changes, and compare the build output.
 
-Very small example
-------------------
+Intro
+-----
+
+### Very small example
 
 Consider this very small git repository, with four commits:
  * A first commit that adds the `example.sh` program,
@@ -127,8 +129,7 @@ We tell it the range we are interested, and what to do for each revision
 (namely, to check it out and run the script). And very nicely it lists only
 those commits that change the output, and omits the refactoring commit..
 
-A variant of the very small example
------------------------------------
+### A variant of the very small example
 
 Of course, there are other properties of the repsitory we may care about. Maybe we want to know which commits have increased the code size? Let's see
 
@@ -157,8 +158,7 @@ We also use the `--show-output` option to see the output next to the commits.
 Note that commit `Third version` is skipped (it did not change the file size,
 but now we see the refactoring commit!
 
-A realistic example
--------------------
+### A realistic example
 
 In the following example, I want to know which changes to the nixpkgs package repostory affect my server. The command line is a bit log, so here are the relevant bits:
 
