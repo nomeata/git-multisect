@@ -11,7 +11,7 @@ done upstream that affect _your_ project. So you instruct `git multisect` to bui
 it with all upstream changes, and compare the build output.
 
 Very small example
-==================
+------------------
 
 Consider this very small git repository, with four commits:
  * A first commit that adds the `example.sh` program,
@@ -128,7 +128,7 @@ We tell it the range we are interested, and what to do for each revision
 those commits that change the output, and omits the refactoring commit..
 
 A variant of the very small example
-===================================
+-----------------------------------
 
 Of course, there are other properties of the repsitory we may care about. Maybe we want to know which commits have increased the code size? Let's see
 
@@ -158,7 +158,7 @@ Note that commit `Third version` is skipped (it did not change the file size,
 but now we see the refactoring commit!
 
 A realistic example
-===================
+-------------------
 
 In the following example, I want to know which changes to the nixpkgs package repostory affect my server. The command line is a bit log, so here are the relevant bits:
 
@@ -276,4 +276,46 @@ Date:   Thu Feb 23 09:13:59 2023 +0800
 ```
 
 </details>
+
+Usage
+-----
+
+```
+Usage: git-multisect.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -C DIR, --repo=DIR    Repository (default .)
+  -f REV, --from=REV    First revision
+  -t REV, --to=REV      Last revision (default: HEAD)
+  --hide-stderr         Hide the command stderr. Good if nosiy
+  --show-output         Include the program output after each log line, and
+                        include the first commit in the log
+  --log-options=LOG_OPTIONS
+                        How to print the git log (default: --oneline)
+  -c CMD, --cmd=CMD     Command to run. Will be passed to a shell with REV set
+                        to a revision.
+```
+
+Issues/Roadmap/Caveats/TODO
+---------------------------
+
+* The tool requires the first commit to be an ancestor of the last commit, and
+  only looks at the first-parent-line from the last commit. This is good enough
+  for the usual single-long-running-branch use case, but could be extended to
+  handle more complex DAGs better.
+
+* If a command fails, `git-multisect` aborts with a non-pretty error message.
+  This could be improved.
+
+* It is designed for small program output, and stores it all in memory. A more
+  efficient way is possible, but probably not the bother. If you have large
+  output, run it through a hash calculation in the command.
+
+* The tool could be packaged more properly and have a test suite.
+
+* If this turns out to be useful, maybe someone could upstream it with the git project.
+
+
+Contributions at <https://github.com/nomeata/git-multisect> are welcome!
 
