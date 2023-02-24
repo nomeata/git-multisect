@@ -71,8 +71,9 @@ irrelevant = 0
 skipped = 0
 
 def statinfo(msg):
+    l = len(str(len(commits)))
     unknown = len(commits) - len(relevant) - irrelevant - skipped
-    info(f"[{len(commits)} total, {len(relevant)} relevant, {irrelevant} irrelevant, {skipped} skipped, {unknown} unknown] {msg}")
+    info(f"[{len(commits):{l}} total, {len(relevant):{l}} relevant, {irrelevant:{l}} irrelevant, {skipped:{l}} skipped, {unknown:{l}} unknown] {msg}")
 
 # memoized output processing
 outputs = {}
