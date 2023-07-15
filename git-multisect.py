@@ -70,16 +70,16 @@ relevant = set()
 irrelevant = 0
 skipped = 0
 
+l = len(str(len(commits)))
 def statinfo(msg):
-    l = len(str(len(commits)))
     unknown = len(commits) - len(relevant) - irrelevant - skipped
-    info(f"[{len(commits):{l}} total, {len(relevant):{l}} relevant, {irrelevant:{l}} irrelevant, {skipped:{l}} skipped, {unknown:{l}} unknown] {msg}")
+    info(f"[{len(relevant):{l}} relevant, {irrelevant:{l}} irrelevant, {skipped:{l}} skipped, {unknown:{l}} unknown] {msg}")
 
 # memoized output processing
 outputs = {}
 def get_output(i):
     if i not in outputs:
-        statinfo(f"inspecing {revs[i][:7]} ...")
+        statinfo(f"🔎 {i:{l}}/{len(commits)} {revs[i][:7]} ...")
         outputs[i] = subprocess.check_output(
             options.cmd,
             shell = True,
@@ -90,11 +90,14 @@ def get_output(i):
     return outputs[i]
 
 # the stack of ranges (indices, inclusive) yet to check for relevant commits.
-# invariant: for all entries but the first we do not know if they are relevant,
-# but if they are irrelvant, then because of something in the range.
-todo = [(0, len(revs)-1)]
-while len(todo)>0:
-    (i,j) = todo.pop()
+# invariants:
+# * the output of endpoints differ, i.e. there will be some relevant commit
+# * the interval is not a singleton
+todo = []
+
+# adds an interval to the top (end) of the stack, checking the invariants
+def add_interval(i,j):
+    global irrelevant, skipped
     if get_output(i) == get_output(j):
         # no changes in this range: drop range, mark end as irrelvant and intermediate as skipped
         irrelevant += 1
@@ -103,10 +106,17 @@ while len(todo)>0:
         # j proven to be relevant
         relevant.add(j-1) # NB index shift
     else:
-        # split the range
-        k = (i+j)//2
-        todo.append((k,j))
-        todo.append((i,k))
+        global todo
+        todo += [(i,j)]
+
+# Add initial interval
+add_interval(0, len(revs)-1)
+# Keep splitting the intervals, until none are left
+while len(todo)>0:
+    (i,j) = todo.pop()
+    k = (i+j)//2
+    add_interval(k,j)
+    add_interval(i,k)
 
 def git_log(rev):
     subprocess.run([
@@ -114,7 +124,6 @@ def git_log(rev):
         "--no-pager",
         "-C", options.repo,
         "log", "-n1"] + options.log_options.split() + [rev])
-
 
 statinfo("done")
 info("")
